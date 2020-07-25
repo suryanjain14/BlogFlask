@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<table>
+    <sno>
+        <row1>1</row1>
+        <row2>2</row2>
+    </sno>
+    <RollNO>
+        <no category="row1">1001</no>
+        <no category="row2">1002</no>
+    </RollNO>
+    <name>
+        <fname>
+            <str category="row1" >Akash</str>
+            <str category="row2" >Mukesh</str>
+        </fname>
+        <lname>
+            <str category="row1" >Mishra</str>
+            <str category="row2" >Jain</str>
+        </lname>
+    </name>
+
+</table>
