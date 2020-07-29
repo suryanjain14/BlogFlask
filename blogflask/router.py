@@ -78,4 +78,19 @@ def logout():
 @app.route('/account')
 @login_required
 def account():
-    return render_template('account.html', title='Account')
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    return render_template('account.html', title='Account',image_file=image_file)
+
+
+@app.route('/update')
+@login_required
+def account_update():
+    if current_user.is_authenticated:
+        form = RegistrationForm()
+        if form.validate_on_submit():
+            user = User.query.filter_by(email=current_user.email)
+
+            db.session.add(user)
+            db.session.commit()
+            flash(f'{form.username.data} your account has been created', 'success')
+    return url_for('account')
