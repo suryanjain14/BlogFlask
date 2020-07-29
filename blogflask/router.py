@@ -75,7 +75,6 @@ def logout():
     return redirect(url_for('home'))
 
 
-
 @app.route('/account')
 @login_required
 def account():
