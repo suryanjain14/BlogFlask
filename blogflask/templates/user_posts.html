@@ -9,6 +9,7 @@
                     <small class="text-muted">{{ post.date_posted }}</small>
                 </div>
                 <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+                <a href="{{ url_for('post_edit',post_id=post.id) }}" ><button type="button" class="btn btn-outline-info" style="float: right;">edit</button> </a>
                 <p class="article-content">{{ post.content }}</p>
             </div>
         </article>
