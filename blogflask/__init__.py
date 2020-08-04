@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-
+from flask_mail import Mail
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ad4dd3ce56f1e06d4eaec78412df6556'
@@ -12,7 +12,10 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
-login_manager.login_message='info'
-
-
+login_manager.login_message = 'info'
+app.config['MAIL_SERVICE'] = 'smtp.googlemail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = ''
+app.config['MAIL_PASSWORD'] =''
 from blogflask import router

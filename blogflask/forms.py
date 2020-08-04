@@ -60,3 +60,20 @@ class PostEdit(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired(), Length(min=3, max=250)])
     submit = SubmitField('Update')
+
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+    def validate_email(self, email):
+
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('No account found ')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), equal_to('password')])
+    submit = SubmitField('Reset Password')

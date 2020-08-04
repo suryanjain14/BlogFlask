@@ -16,6 +16,7 @@ def home():
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template("home.html", posts=posts, title='Home', user=User())
 
+
 @app.route('/posts/<user_id>')
 def user_posts(user_id):
     user = User.query.get(user_id)
@@ -115,9 +116,6 @@ def new_posts():
     return render_template('create_post.html', title='Posts', form=form)
 
 
-
-
-
 @app.route('/post/edit/<int:post_id>', methods=['GET', 'POST'])
 def post_edit(post_id):
     post = Post.query.get(post_id)
@@ -155,3 +153,32 @@ def delete_post(post_id):
     except:
         flash(f'ACCESS DENIED', 'danger')
         return redirect(url_for('home'))
+
+
+def send_reset_email(user):
+    pass
+
+
+@app.route('/reset_password', methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RequestResetForm
+    if form.validate_on_submit():
+        user =User.query.filter_by(email=form.email.data)
+        send_reset_email(user)
+        flash('verification email sent')
+
+    return render_template('reset_request.html', title='Reset Password', form=form)
+
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    user =User.verify_reset_token(token)
+    if  user is None:
+        flash('Token expired or invalid Token', 'warning')
+        return redirect(url_for('reset_request'))
+    form = ResetPasswordForm()
+    return render_template('reset_token.html',title = 'Reset password',form = form)
