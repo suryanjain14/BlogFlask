@@ -12,8 +12,16 @@ import os
 @app.route('/')
 @app.route('/home')
 def home():
-    posts = Post.query.all()
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template("home.html", posts=posts, title='Home', user=User())
+
+@app.route('/posts/<user_id>')
+def user_posts(user_id):
+    user = User.query.get(user_id)
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.filter_by(user_id=user_id).order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+    return render_template("user_posts.html", posts=posts, title=current_user.username + ' Posts', user=user)
 
 
 @app.route("/about")
@@ -103,15 +111,11 @@ def new_posts():
         db.session.add(post)
         db.session.commit()
         flash(f'{current_user.username} Content Posted', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('new_posts'))
     return render_template('create_post.html', title='Posts', form=form)
 
 
-@app.route('/posts/<user_id>')
-def user_posts(user_id):
-    user = User.query.get(user_id)
-    posts = Post.query.filter_by(user_id=user_id).all()
-    return render_template("user_posts.html", posts=posts, title=current_user.username + ' Posts', user=user)
+
 
 
 @app.route('/post/edit/<int:post_id>', methods=['GET', 'POST'])
