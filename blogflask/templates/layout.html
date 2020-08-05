@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html >
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -37,7 +37,7 @@
                     {% if current_user.is_authenticated %}
                         <a class="nav-item nav-link" href="/account">{{current_user.username }}</a>
                         <a class="nav-item nav-link" href="/post/new">Create Posts</a>
-                         <a class="nav-item nav-link" href="{{ url_for('user_posts',user_id=current_user.id) }}">MY Posts</a>
+                         <a class="nav-item nav-link" href="{{ url_for('users.user_posts',user_id=current_user.id) }}">MY Posts</a>
                         <a class="nav-item nav-link" href="/logout">Logout</a>
                     {% else %}
 
